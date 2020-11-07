@@ -1,0 +1,21 @@
+
+.games {
+    padding-top: 100px;
+    text-align: center;
+}
+
+#rock {
+    background-color: palegoldenrod;
+}
+
+#scissors {
+    background-color: palegreen;
+}
+
+#paper {
+    background-color: paleturquoise;
+}
+
+#restart{
+    background-color: palevioletred;
+}

@@ -33,7 +33,7 @@
   .date-picker.selected {
     font-weight: bold;
     color: #fff;
-    background: palegoldenrod;
+    background: gold;
   }
   .date-picker.selected span {
     border-bottom: 2px solid currentColor;

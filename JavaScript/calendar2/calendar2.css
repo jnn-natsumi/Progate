@@ -1,0 +1,52 @@
+.calendar {
+    text-align: center;
+}
+
+h1 {
+    font-size: 18px;
+    text-align: center;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+td {
+    border: 1px solid #ddd;
+    padding: 5px;
+    text-align: center;
+}
+
+td:first-child {
+    color: red;
+}
+
+td:last-child {
+    color: royalblue;
+}
+
+.today {
+    color: goldenrod !important;
+}
+
+input.year { 
+    width: 80px;
+    margin: 0 10px;
+ }
+
+ input.month, .day { 
+    width: 25px;
+    margin: 0 10px;
+ }
+
+ /* 追加部分 */
+
+ td.is-disabled {
+    color: #ccc;
+}
+
+button {
+    margin-top: 10px;
+}

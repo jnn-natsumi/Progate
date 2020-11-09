@@ -1,107 +1,112 @@
-const weeks = ['日', '月', '火', '水', '木', '金', '土']
-const date = new Date(); // 任意の日付を設定する方法 引数の中に数字をいれる // newはオブジェクトを初期化するキーワード
-let year = date.getFullYear() // Date オブジェクトが持つ値から、年の値を取得する
-let month = date.getMonth()+1  // 0 が年の最初の月を示す ので、+1を記載する
-
-const config = {
-    show: 1,
+function generate_year_range(start, end) {
+    var years = "";
+    // varでは再宣言、再代入が可能です。
+    for (var year = start; year <= end; year++) {
+        years += "<option value='" + year + "'>" + year + "</option>";
+    }
+    return years;
 }
 
-function showCalendar(year, month) {
-    for ( i = 0 ; i < config.show; i++) {
-        const  calendarHtml = createCalendar(year, month)
-        const sec = document.createElement('section')
-        sec.innerHTML = calendarHtml
-        document.querySelector('#calendar').appendChild(sec)
+var today = new Date();
+var currentMonth = today.getMonth();
+var currentYear = today.getFullYear();
+var selectYear = document.getElementById("year");
+var selectMonth = document.getElementById("month");
+// element：HTML や XML 文書における、要素（タグ）に相当
 
-        month++
-        if (month > 12) {
-            year++
-            month = 1
-        }
-    }
+var createYear = generate_year_range(1995, 2050);
+// プルダウンの年の範囲
+
+document.getElementById("year").innerHTML = createYear;
+// .innerHTML：html要素の中身を変更することができるJavaScriptの便利な関数
+
+var calendar = document.getElementById("calendar");
+var lang = calendar.getAttribute('data-lang');
+// htmlカレンダー テーブルの表示
+// id="calendar" の要素の data-lang の値を表示します。
+
+var months = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月",];
+var days = ["日","月","火","水","木","金","土"];
+// カレンダーにて表示させる文字列
+
+var dayHeader ="<tr>";
+for (day in days) {
+    dayHeader += "<th data-days='" + days[day] + "'>" + days[day] +"</th>";
+}
+dayHeader += "</tr>";
+
+document.getElementById("thead-month").innerHTML = dayHeader;
+// thead-monthを取得して、そこにdaysを導入してる
+
+monthAndYear = document.getElementById("monthAndYear");
+showCalendar(currentMonth, currentYear);
+// htmlのh4に当たる部分
+// show は要素を表示？
+
+function next() {
+    currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+    currentMonth = (currentMonth + 1) % 12;
+    showCalendar(currentMonth, currentYear);
 }
 
-function createCalendar(year, month) {
-    const  today = date.getDate()
-    // getDate：日を取得する getDay：曜日を０〜６の値で取得する 
+function prev() {
+    currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+    currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+    showCalendar(currentMonth, currentYear);
+}
 
-    const startDate = new Date(year, month - 1, 1) // 月の最初の日を取得
-    const endDate = new Date(year, month,  0) // 月の最後の日を取得 // 1ヶ月加えて翌月にします。日付に0を設定し、該当月のの0日（つまり、前月末）にします。
-
-    const endDayCount = endDate.getDate() // 月の末日
-
-    const lastMonthEndDate = new Date(year, month - 1, 0) // 前月の最後の日の情報
-    const lastMonthendDayCount = lastMonthEndDate.getDate() // 前月の末日
-
-    const startDay = startDate.getDay() // 月の最初の日の曜日を取得
+function jump() {
+    currentYear = parseInt(selectYear.value); // parseIntは整数専用であり、数字だけ解析して取り出すことが可能
+    currentMonth = parseInt(selectMonth.value);
+    showCalendar(currentMonth, currentYear); 
+}
 
 
-    let dayCount = 1 // 日にちのカウント 何日から始めるか
-    let calendarHtml = '' // HTMLを組み立てる変数
+function showCalendar(month, year) {  // カレンダーの数字部分を作成する ★追加
+    var firstDay = ( new Date( year, month, ) ).getDay();
 
-    calendarHtml += '<h1>' + year  + '年' + month + '月' + '</h1>'
-    calendarHtml += '<table>'
+    tbl = document.getElementById("calendar-body");
+    tbl.innerHTML = "";
+    // カレンダーの数字部分
 
-    // 曜日の行を作成
-    for (let i = 0; i < weeks.length; i++) {
-        calendarHtml += '<td>' + weeks[i] + '</td>' // 横の配列（行）
-    }
+    monthAndYear.innerHTML = year + "年 " + months[month] ;
+    selectYear.value = year;
+    selectMonth.value = month;
+    // selectオブジェクトの値（value）
 
-    for (let w = 0; w < 6; w++) {
-        calendarHtml += '<tr>' // 縦の配列（列）
+    var date = 1;
+    for (  var i = 0; i < 6; i ++) {
+        var row = document.createElement("tr");
 
-        for (let d = 0; d < 7; d++) {
-            if (w == 0 && d < startDay) {
-                // 1行目で1日の曜日の前 追加分
-                let num = lastMonthendDayCount - startDay + d + 1
-                calendarHtml += '<td class="is-disabled">' + num + '</td>'
-            } else if (dayCount > endDayCount) {
-                // 末尾の日数を超えた 追加部分
-                let num = dayCount - endDayCount
-                calendarHtml += '<td class="is-disabled">' + num + '</td>'
-                dayCount++
-            } else if (dayCount === today) {
-                calendarHtml += "<td class='today'>" + dayCount + "</td>"
-                dayCount++
+        for ( var j = 0; j < 7; j++ ) {
+            if ( i === 0 && j <firstDay) {
+                cell = document.createElement("td");
+                cellText = document.createTextNode("");  // .createTextNodeは、「HTML 文書」などの、タグ以外の文字データに相当する
+                cell.appendChild(cellText);
+                row.appendChild(cell);
+            } else if (date > daysInMonth(month, year)) { // 日数がその月より多くなったらここで終了
+                break;
             } else {
-                calendarHtml += '<td>' + dayCount + '</td>'
-                dayCount++
+                cell = document.createElement("td");
+                cell.setAttribute("data-date", date);
+                cell.setAttribute("data-month", month + 1);
+                cell.setAttribute("data-year", year);
+                cell.setAttribute("data-month_name", months[month]);
+                cell.className = "date-picker";
+                cell.innerHTML = "<span>" + date + "</span>";
+
+                if ( date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+                    cell.className = "date-picker selected"; // 対象要素のクラス名が cellの"td" であった場合の処理をここに記述。今日だった場合、クラス名をつけてcssで色をつける
+                }
+                row.appendChild(cell); // .appendChild：要素を指定し、その要素の子要素として、HTMLタグを追加することができます。この場合は"td"？
+                date++;
             }
         }
-        calendarHtml += '</tr>'
-    }
-    calendarHtml += '</table>'
 
-    return calendarHtml
+        tbl.appendChild(row);
+    }
 }
 
-function moveCalendar(e) {
-    document.querySelector('#calendar').innerHTML = ''
-
-    if (e.target.id === 'prev') {
-        month--
-
-        if (month < 1) {
-            year--
-            month = 12
-        }
-    }
-
-    if (e.target.id === 'next') {
-        month++
-
-        if (month > 12) {
-            year++
-            month = 1
-        }
-    }
-
-    showCalendar(year, month)
+function daysInMonth(iMonth, iYear) {
+    return 32 - new Date(iYear, iMonth, 32).getDate();
 }
-
-document.querySelector('#prev').addEventListener('click', moveCalendar)
-document.querySelector('#next').addEventListener('click', moveCalendar)
-
-showCalendar(year, month)
-

@@ -62,7 +62,7 @@ function jump() {
 }
 
 
-function showCalendar(month, year) {  // カレンダーの数字部分を作成する ★追加
+function showCalendar(month, year) {  // カレンダーの数字部分を作成する
     var firstDay = ( new Date( year, month, ) ).getDay();
 
     tbl = document.getElementById("calendar-body");

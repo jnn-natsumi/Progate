@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>calculator</title>
+    <link rel="stylesheet" href="calculator.css">
+</head>
+<body>
+    <form name="myForm">
+        <table class="table">
+            <tr>
+                <td><strong>電 卓</strong></td>
+            </tr>
+            <tr>
+                <td class="window"><input type="text" name="myLine" value="0"></td>
+                <td><input type="button" value="C" onclick="myC()"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value=" ７ " onclick="myValue(7)"></td>
+                <td><input type="button" value=" ８ " onclick="myValue(8)"></td>
+                <td><input type="button" value=" ９ " onclick="myValue(9)"></td>
+                <td><input type="button" value="÷" onclick="myCalculate('/')"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value=" ４ " onclick="myValue(4)"></td>
+                <td><input type="button" value=" ５ " onclick="myValue(5)"></td>
+                <td><input type="button" value=" ６ " onclick="myValue(6)"></td>
+                <td><input type="button" value="×" onclick="myCalculate('*')"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value=" １ " onclick="myValue(1)"></td>
+                <td><input type="button" value=" ２ " onclick="myValue(2)"></td>
+                <td><input type="button" value=" ３ " onclick="myValue(3)"></td>
+                <td><input type="button" value="－" onclick="myCalculate('-')"></td>
+            </tr>
+            <tr>
+                <td><input type="button" value=" ０ " onclick="myValue(0)"></td>
+                <td><input type="button" value=" ・ " onclick="myValue('.')"></td>
+                <td><input type="button" value=" ＋ " onclick="myCalculate('+')"></td>
+                <td><input type="button" value="＝" onclick="myCalculate('=')"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+<script type="text/javascript" src="calculator.js"></script>
+</html>
